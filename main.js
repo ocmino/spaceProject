@@ -5,12 +5,12 @@ import './style.css'
   <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>` */
 
 
-
 import * as THREE from 'three';
 import { AmbientLight } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 
+//CREATE SCENE
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -24,9 +24,7 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 camera.position.setZ(30);
  
 
-
-
-//LIGHT
+//LIGHT AND GRID
 const pointLight = new THREE.PointLight(0xffffff);
 pointLight.position.set(25, 5, 600);
 
@@ -36,9 +34,6 @@ scene.add(pointLight, ambientLight);
 const gridHelper = new THREE.GridHelper(400, 100)
 const lightHelper = new THREE.PointLightHelper(pointLight)
 /* scene.add(lightHelper, gridHelper) */
-
-
-
 
 
 //CONTROLS
@@ -51,7 +46,7 @@ function addStar() {
   const material = new THREE.MeshStandardMaterial( {color: 0xffffff})
   const star = new THREE.Mesh( geometry, material );
 
-  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread( 1000 ) );
+  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread( 1200 ) );
 
   star.position.set(x, y, z);
   scene.add(star);
@@ -63,8 +58,7 @@ const spaceTexture = new THREE.TextureLoader().load('space.jpg');
 scene.background = spaceTexture;
 
 
-
-
+//CAMERA
 function moveCamera() {
 
     const t = document.body.getBoundingClientRect().top;
@@ -86,7 +80,7 @@ document.body.onscroll = moveCamera;
 //SUN
 const sunTexture = new THREE.TextureLoader().load('sun.jpg')
 const sun = new THREE.Mesh(
-  new THREE.SphereGeometry(15, 32, 32),
+  new THREE.SphereGeometry(25, 32, 16),
   new THREE.MeshStandardMaterial({
     map: sunTexture,
   })
@@ -108,15 +102,13 @@ const torus = new THREE.Mesh( geometry, material );
 scene.add( torus )
 
 
-
-// AVATAR
+// JONATHAN BOX
 const jonathanTexture = new THREE.TextureLoader().load('IMG_6100.JPG');
 const jonathan = new THREE.Mesh(
   new THREE.BoxGeometry(3, 3, 3, 3),
   new THREE.MeshBasicMaterial( { map: jonathanTexture })
 );
 /* scene.add(jonathan) */
-
 
 
 //EARTH
@@ -131,7 +123,16 @@ earth.position.set(-10, 0, 30);
 scene.add(earth);
 
 
-
+//JUPITER
+const jupiterTexture = new THREE.TextureLoader().load('jupiter.jpg')
+const jupiter = new THREE.Mesh(
+  new THREE.SphereGeometry(20, 32, 16),
+  new THREE.MeshStandardMaterial({
+    map: jupiterTexture,
+  })
+);
+jupiter.position.set(0, 0, -700);
+scene.add(jupiter);
 
 
 //MOON
@@ -151,7 +152,7 @@ function render() {
 
     moon.rotation.y += 0.001;
 
-    //MOONS ROTATION AROUND EARTH
+    //MOONS ORBIT AROUND EARTH
     moon.position.x = 15*Math.cos(t) + earth.position.x;
     moon.position.z = 15*Math.sin(t) + earth.position.z; 
 
@@ -160,9 +161,7 @@ function render() {
 render();
 
 
-
-
-
+//ANIMATION LOOP
 function animate() {
   requestAnimationFrame(animate);
   
@@ -173,10 +172,15 @@ function animate() {
 
   earth.rotation.y += 0.001;
 
+
   sun.rotation.y += 0.001;
+
+
+  jupiter.rotation.y += 0.001;
   
 
   controls.update();
+
 
   renderer.render( scene, camera );
 }
