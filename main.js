@@ -51,8 +51,8 @@ const lightHelper = new THREE.PointLightHelper(pointLight)
 //CONTROLS
 const controls = new FlyControls(camera, renderer.domElement);
 
-controls.movementSpeed = 1;
-controls.rollSpeed = 0.5;
+controls.movementSpeed = 2;
+controls.rollSpeed = 0.1;
 controls.autoForward = false;
 controls.dragToLook = false;
 
@@ -98,14 +98,14 @@ document.body.onscroll = moveCamera;
 //SUN
 const sunTexture = new THREE.TextureLoader().load('sun.jpg')
 const sun = new THREE.Mesh(
-  new THREE.SphereGeometry(40, 32, 16),
+  new THREE.SphereGeometry(250, 32, 16),
   new THREE.MeshStandardMaterial({
     map: sunTexture,
   })
 );
 scene.add(sun);
 
-sun.position.set(25, 5, 600);
+sun.position.set(25, 5, 1000);
 
 
 // SPACESHIP
