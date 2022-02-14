@@ -43,7 +43,7 @@ pointLight.position.set(25, 5, 600);
 const ambientLight = new THREE.AmbientLight(0xffffff);
 scene.add(pointLight, ambientLight);
 
-const gridHelper = new THREE.GridHelper(400, 100)
+const gridHelper = new THREE.GridHelper(2000, 100)
 const lightHelper = new THREE.PointLightHelper(pointLight)
 /* scene.add(lightHelper, gridHelper) */
 
@@ -51,7 +51,7 @@ const lightHelper = new THREE.PointLightHelper(pointLight)
 //CONTROLS
 const controls = new FlyControls(camera, renderer.domElement);
 
-controls.movementSpeed = 2;
+controls.movementSpeed = 10;
 controls.rollSpeed = 0.1;
 controls.autoForward = false;
 controls.dragToLook = false;
@@ -64,7 +64,7 @@ function addStar() {
   const material = new THREE.MeshStandardMaterial( {color: 0xffffff})
   const star = new THREE.Mesh( geometry, material );
 
-  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread( 2400 ) );
+  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread( 4000 ) );
 
   star.position.set(x, y, z);
   scene.add(star);
@@ -72,7 +72,7 @@ function addStar() {
 
 Array(3000).fill().forEach(addStar) 
 
-const spaceTexture = new THREE.TextureLoader().load('space.jpg');
+const spaceTexture = new THREE.TextureLoader().load('black.jpg');
 scene.background = spaceTexture;
 
 
@@ -126,7 +126,6 @@ scene.add( torus )
 
 
 
-
 // JONATHAN BOX
 const jonathanTexture = new THREE.TextureLoader().load('IMG_6100.JPG');
 const jonathan = new THREE.Mesh(
@@ -172,16 +171,31 @@ earth.position.set(0, 0, 30);
 scene.add(earth);
 
 
-//DEATH STAR
-const deathstarTexture = new THREE.TextureLoader().load('deathstar2.png')
-const deathstar = new THREE.Mesh(
-  new THREE.SphereGeometry(4, 32, 16),
+//FLYER
+const flyerTexture = new THREE.TextureLoader().load('windows.jpg')
+const flyer = new THREE.Mesh(
+  new THREE.ConeGeometry(1,2, 32),
   new THREE.MeshStandardMaterial({
-    map: deathstarTexture,
+    map: flyerTexture,
   })
 );
-deathstar.position.set(0, 25, - 50);
-/* scene.add(deathstar); */
+
+const flyerBody = new THREE.TextureLoader().load('windows.jpg')
+const body = new THREE.Mesh(
+  new THREE.CylinderGeometry( 1, 1, 4, 32 ),
+  new THREE.MeshStandardMaterial({
+    map: flyerBody,
+  })
+)
+flyer.rotateX(90)
+/* scene.add(flyer, body) */
+
+
+
+
+
+
+
 
 
 //MARS
@@ -209,7 +223,7 @@ scene.add(jupiter);
 
 
 //SATURN
-const saturnTexture = new THREE.TextureLoader().load('saturn.jpg')
+const saturnTexture = new THREE.TextureLoader().load('saturn2.jpg')
 const saturn = new THREE.Mesh(
   new THREE.SphereGeometry(20, 32, 16),
   new THREE.MeshStandardMaterial({
@@ -244,6 +258,30 @@ const uranus = new THREE.Mesh(
 );
 uranus.position.set(0, 0, -1000);
 scene.add(uranus);
+
+
+//NEPTUNE
+const neptuneTexture = new THREE.TextureLoader().load('neptune.png')
+const neptune = new THREE.Mesh(
+  new THREE.SphereGeometry(4, 32, 16),
+  new THREE.MeshStandardMaterial({
+    map: neptuneTexture,
+  })
+);
+neptune.position.set(0, 0, -1200);
+scene.add(neptune);
+
+
+//PLUTO
+const plutoTexture = new THREE.TextureLoader().load('pluto.jpg')
+const pluto = new THREE.Mesh(
+  new THREE.SphereGeometry(2, 32, 16),
+  new THREE.MeshStandardMaterial({
+    map: plutoTexture,
+  })
+);
+pluto.position.set(0, 0, -1500);
+scene.add(pluto);
 
 
 
@@ -303,8 +341,6 @@ function animate() {
 
   earth.rotation.y += 0.001;
 
-  deathstar.rotation.y += 0.002;
-
 
   mars.rotation.y += 0.001;
 
@@ -320,9 +356,35 @@ function animate() {
 
 
   uranus.rotation.y += 0.001;
+
+
+  neptune.rotation.y += 0.001;
+
+
+  pluto.rotation.y += 0.001;
   
 
   controls.update(0.05);
+
+
+
+  flyer.position.copy( camera.position );
+  flyer.rotation.copy( camera.rotation );
+  flyer.updateMatrix();
+  flyer.translateZ( - 12 );
+
+
+  body.position.copy( camera.position );
+  body.rotation.copy( camera.rotation );
+  body.updateMatrix();
+  body.translateY(-2.1);
+  body.translateZ( - 8 );
+
+
+  flyer.rotateX(-69.9)
+  body.rotateX(-70)
+
+
 
 
   renderer.render( scene, camera );
