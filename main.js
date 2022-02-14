@@ -8,6 +8,9 @@ import './style.css'
 import * as THREE from 'three';
 import { AmbientLight } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { FlyControls } from 'three/examples/jsm/controls/FlyControls';
+
+
 
 
 
@@ -46,7 +49,13 @@ const lightHelper = new THREE.PointLightHelper(pointLight)
 
 
 //CONTROLS
-const controls = new OrbitControls(camera, renderer.domElement);
+const controls = new FlyControls(camera, renderer.domElement);
+
+controls.movementSpeed = 1;
+controls.rollSpeed = 0.5;
+controls.autoForward = false;
+controls.dragToLook = false;
+
 
 
 //ADD STAR
@@ -313,7 +322,7 @@ function animate() {
   uranus.rotation.y += 0.001;
   
 
-  controls.update();
+  controls.update(0.05);
 
 
   renderer.render( scene, camera );
