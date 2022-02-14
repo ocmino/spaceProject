@@ -111,15 +111,30 @@ const jonathan = new THREE.Mesh(
 /* scene.add(jonathan) */
 
 
+//MERCURY
+const mercuryTexture = new THREE.TextureLoader().load('mercury.jpg')
+const mercury = new THREE.Mesh(
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: mercuryTexture,
+  })
+);
+mercury.position.set(0, 0, 350);
+scene.add(mercury);
+
+
+
+
+
 //EARTH
 const earthTexture = new THREE.TextureLoader().load('earth.jpg')
 const earth = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.SphereGeometry(4, 32, 32),
   new THREE.MeshStandardMaterial({
     map: earthTexture,
   })
 );
-earth.position.set(-10, 0, 30);
+earth.position.set(0, 0, 30);
 scene.add(earth);
 
 
@@ -169,6 +184,10 @@ function animate() {
   torus.rotation.x += 0.001;
   torus.rotation.y += 0.005;
   torus.rotation.z += 0.001;
+  
+
+  mercury.rotation.y += 0.001;
+
 
   earth.rotation.y += 0.001;
 
