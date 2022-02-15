@@ -11,6 +11,12 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FlyControls } from 'three/examples/jsm/controls/FlyControls';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 
+import {
+	FileLoader,
+	Loader,
+	ShapePath
+} from 'three';
+
 
 
 
@@ -45,7 +51,7 @@ scene.add(pointLight, ambientLight);
 const gridHelper = new THREE.GridHelper(2000, 100)
 
 const lightHelper = new THREE.PointLightHelper(pointLight)
-//scene.add(lightHelper, gridHelper)
+/* scene.add(lightHelper, gridHelper) */
 
 
 
@@ -54,7 +60,7 @@ const lightHelper = new THREE.PointLightHelper(pointLight)
 //CONTROLS
 const controls = new FlyControls(camera, renderer.domElement);
 
-controls.movementSpeed = 20;
+controls.movementSpeed = 2; //Matchar musiken bra
 controls.rollSpeed = 0.1;
 controls.autoForward = false;
 controls.dragToLook = false;
@@ -76,7 +82,7 @@ function addStar() {
   star.position.set(x, y, z);
   scene.add(star);
 }
-Array(3000).fill().forEach(addStar) 
+Array(4000).fill().forEach(addStar) 
 
 const spaceTexture = new THREE.TextureLoader().load('black.jpg');
 scene.background = spaceTexture;
