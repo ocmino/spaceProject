@@ -20,7 +20,7 @@ import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockCont
 //CREATE SCENE
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 4000 );
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg')
@@ -54,7 +54,7 @@ const lightHelper = new THREE.PointLightHelper(pointLight)
 //CONTROLS
 const controls = new FlyControls(camera, renderer.domElement);
 
-controls.movementSpeed = 1;
+controls.movementSpeed = 20;
 controls.rollSpeed = 0.1;
 controls.autoForward = false;
 controls.dragToLook = false;
@@ -121,7 +121,7 @@ const sun = new THREE.Mesh(
 );
 scene.add(sun);
 
-sun.position.set(25, 5, 1000);
+sun.position.set(25, 5, 2000);
 
 
 
