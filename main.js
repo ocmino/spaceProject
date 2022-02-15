@@ -40,7 +40,8 @@ camera.position.setZ(30);
 const pointLight = new THREE.PointLight(0xffffff);
 pointLight.position.set(25, 5, 600);
 
-const ambientLight = new THREE.AmbientLight(0xffffff);
+/* const ambientLight = new THREE.AmbientLight(0xffffff); */
+const ambientLight = new THREE.AmbientLight(0x404040);
 scene.add(pointLight, ambientLight);
 
 const gridHelper = new THREE.GridHelper(2000, 100)
@@ -345,7 +346,7 @@ function animate() {
   mars.rotation.y += 0.001;
 
 
-  sun.rotation.y += 0.001;
+  sun.rotation.y += 0.0008;
 
 
   jupiter.rotation.y += 0.001;
