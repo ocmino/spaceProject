@@ -5,30 +5,52 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Space Adventures!</title>
+    
+    <link 
+href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" 
+rel="stylesheet">
   </head>
 
-  <style class="z-0">
-    
+  
+
+  <style class="z-0"> 
     audio { 
         display:none;
     }
 </style>
+
+
+
   <body>
 
 
-    <!-- <audio controls autoplay>
-      <source src="/23 Piano Concerto in F Minor - Largo.mp3" type="audio/mpeg">
-  
-    </audio> -->
+    
+    <div class="flex items-start justify-center ">
+      <div class="bg-black max-w w-full p-6 text-center">
+          <p class="text-2xl font-bold leading-none text-yellow-700">WASD move – R|F up/down – Q|E roll – mouse look around</p>
+      </div>
+  </div>
 
-    <canvas id="bg"></canvas>   
+
+     <audio controls autoplay loop>
+        <source src="River Music.mp3" type="audio/mpeg">
+      </audio>
+
+    <canvas id="bg">
+
+      
+    </canvas>   
 
 
+
+
+   
     <script type="module" src="/main.js"></script>
 
 
 
     
+   
 
 
 

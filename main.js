@@ -6,9 +6,10 @@ import './style.css'
 
 
 import * as THREE from 'three';
-import { AmbientLight } from 'three';
+import { AmbientLight, PointLightHelper } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FlyControls } from 'three/examples/jsm/controls/FlyControls';
+import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
 
 
 
@@ -25,41 +26,46 @@ const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg')
 });
 
-
-
 renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize( window.innerWidth, window.innerHeight );
 camera.position.setZ(30);
 
 
 
-
- 
-
-//LIGHT AND GRID
+//LIGHT, LIGHTHELPER AND GRIDHELPER
 const pointLight = new THREE.PointLight(0xffffff);
-pointLight.position.set(25, 5, 600);
 
-/* const ambientLight = new THREE.AmbientLight(0xffffff); */
+pointLight.position.set(25, 5, 500);
+
+
+//const ambientLight = new THREE.AmbientLight(0xffffff);
 const ambientLight = new THREE.AmbientLight(0x404040);
 scene.add(pointLight, ambientLight);
 
 const gridHelper = new THREE.GridHelper(2000, 100)
+
 const lightHelper = new THREE.PointLightHelper(pointLight)
-/* scene.add(lightHelper, gridHelper) */
+//scene.add(lightHelper, gridHelper)
+
+
+
 
 
 //CONTROLS
 const controls = new FlyControls(camera, renderer.domElement);
 
-controls.movementSpeed = 10;
+controls.movementSpeed = 1;
 controls.rollSpeed = 0.1;
 controls.autoForward = false;
 controls.dragToLook = false;
 
 
 
-//ADD STAR
+
+
+
+
+//ADD STARS
 function addStar() {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
   const material = new THREE.MeshStandardMaterial( {color: 0xffffff})
@@ -70,11 +76,15 @@ function addStar() {
   star.position.set(x, y, z);
   scene.add(star);
 }
-
 Array(3000).fill().forEach(addStar) 
 
 const spaceTexture = new THREE.TextureLoader().load('black.jpg');
 scene.background = spaceTexture;
+
+
+
+
+
 
 
 //CAMERA
@@ -96,6 +106,11 @@ function moveCamera() {
 document.body.onscroll = moveCamera;
 
 
+
+
+
+
+
 //SUN
 const sunTexture = new THREE.TextureLoader().load('sun.jpg')
 const sun = new THREE.Mesh(
@@ -109,19 +124,6 @@ scene.add(sun);
 sun.position.set(25, 5, 1000);
 
 
-// SPACESHIP
-const spaceshipTexture = new THREE.TextureLoader().load('death star.jpg');
-const normalTexture = new THREE.TextureLoader().load('normal.jpg')
-const geometry = new THREE.TorusGeometry( 10, 3, 16, 100)
-const material = new THREE.MeshBasicMaterial( {
-  map: spaceshipTexture, 
-  normalMap: normalTexture
-} );  
-const torus = new THREE.Mesh( geometry, material );
-scene.add( torus )
-
-
-
 
 
 
@@ -133,7 +135,8 @@ const jonathan = new THREE.Mesh(
   new THREE.BoxGeometry(3, 3, 3, 3),
   new THREE.MeshBasicMaterial( { map: jonathanTexture })
 );
-/* scene.add(jonathan) */
+//scene.add(jonathan)
+
 
 
 //MERCURY
@@ -148,6 +151,7 @@ mercury.position.set(0, 0, 350);
 scene.add(mercury);
 
 
+
 //VENUS
 const venusTexture = new THREE.TextureLoader().load('venus.jpg')
 const venus = new THREE.Mesh(
@@ -160,6 +164,20 @@ venus.position.set(0, 0, 200);
 scene.add(venus);
 
 
+
+// SPACESHIP
+const spaceshipTexture = new THREE.TextureLoader().load('death star.jpg');
+const normalTexture = new THREE.TextureLoader().load('normal.jpg')
+const geometry = new THREE.TorusGeometry( 5, 1.5, 8, 50)
+const material = new THREE.MeshBasicMaterial( {
+  map: spaceshipTexture, 
+  normalMap: normalTexture
+} );  
+const torus = new THREE.Mesh( geometry, material );
+scene.add( torus )
+
+
+
 //EARTH
 const earthTexture = new THREE.TextureLoader().load('earth.jpg')
 const earth = new THREE.Mesh(
@@ -170,131 +188,6 @@ const earth = new THREE.Mesh(
 );
 earth.position.set(0, 0, 30);
 scene.add(earth);
-
-
-//FLYER
-const flyerTexture = new THREE.TextureLoader().load('windows.jpg')
-const flyer = new THREE.Mesh(
-  new THREE.ConeGeometry(1,2, 32),
-  new THREE.MeshStandardMaterial({
-    map: flyerTexture,
-  })
-);
-
-const flyerBody = new THREE.TextureLoader().load('windows.jpg')
-const body = new THREE.Mesh(
-  new THREE.CylinderGeometry( 1, 1, 4, 32 ),
-  new THREE.MeshStandardMaterial({
-    map: flyerBody,
-  })
-)
-flyer.rotateX(90)
-/* scene.add(flyer, body) */
-
-
-
-
-
-
-
-
-
-//MARS
-const marsTexture = new THREE.TextureLoader().load('mars.jpg')
-const mars = new THREE.Mesh(
-  new THREE.SphereGeometry(2.5, 32, 16),
-  new THREE.MeshStandardMaterial({
-    map: marsTexture,
-  })
-);
-mars.position.set(0, 0, -70);
-scene.add(mars);
-
-
-//JUPITER
-const jupiterTexture = new THREE.TextureLoader().load('jupiter.jpg')
-const jupiter = new THREE.Mesh(
-  new THREE.SphereGeometry(20, 32, 16),
-  new THREE.MeshStandardMaterial({
-    map: jupiterTexture,
-  })
-);
-jupiter.position.set(0, 0, -500);
-scene.add(jupiter);
-
-
-//SATURN
-const saturnTexture = new THREE.TextureLoader().load('saturn2.jpg')
-const saturn = new THREE.Mesh(
-  new THREE.SphereGeometry(20, 32, 16),
-  new THREE.MeshStandardMaterial({
-    map: saturnTexture
-  })
-);
-saturn.position.set(0, 0, -800);
-scene.add(saturn);
-
-
-// RINGS
-const ringsTexture = new THREE.TextureLoader().load('rings2.jpg');
-const ringGeometry = new THREE.RingGeometry( 50, 80, 32 )
-const ringMaterial = new THREE.MeshStandardMaterial( {
-  side: THREE.DoubleSide,
-  map: ringsTexture
-} );  
-const rings = new THREE.Mesh( ringGeometry, ringMaterial );
-
-rings.position.set(0, 0, -800);
-rings.rotation.x=90;
-scene.add( rings )
-
-
-//URANUS
-const uranusTexture = new THREE.TextureLoader().load('uranus.jpg')
-const uranus = new THREE.Mesh(
-  new THREE.SphereGeometry(5, 32, 16),
-  new THREE.MeshStandardMaterial({
-    map: uranusTexture,
-  })
-);
-uranus.position.set(0, 0, -1000);
-scene.add(uranus);
-
-
-//NEPTUNE
-const neptuneTexture = new THREE.TextureLoader().load('neptune.png')
-const neptune = new THREE.Mesh(
-  new THREE.SphereGeometry(4, 32, 16),
-  new THREE.MeshStandardMaterial({
-    map: neptuneTexture,
-  })
-);
-neptune.position.set(0, 0, -1200);
-scene.add(neptune);
-
-
-//PLUTO
-const plutoTexture = new THREE.TextureLoader().load('pluto.jpg')
-const pluto = new THREE.Mesh(
-  new THREE.SphereGeometry(2, 32, 16),
-  new THREE.MeshStandardMaterial({
-    map: plutoTexture,
-  })
-);
-pluto.position.set(0, 0, -1500);
-scene.add(pluto);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -322,6 +215,136 @@ function render() {
     renderer.render(scene, camera); 
 } 
 render();
+
+
+
+//FLYER
+const flyerTexture = new THREE.TextureLoader().load('windows.jpg')
+const flyer = new THREE.Mesh(
+  new THREE.ConeGeometry(1,2, 32),
+  new THREE.MeshStandardMaterial({
+    map: flyerTexture,
+  })
+);
+
+const flyerBody = new THREE.TextureLoader().load('windows.jpg')
+const body = new THREE.Mesh(
+  new THREE.CylinderGeometry( 1, 1, 4, 32 ),
+  new THREE.MeshStandardMaterial({
+    map: flyerBody,
+  })
+)
+flyer.rotateX(90)
+//scene.add(flyer, body)
+
+
+
+//MARS
+const marsTexture = new THREE.TextureLoader().load('mars.jpg')
+const mars = new THREE.Mesh(
+  new THREE.SphereGeometry(2.5, 32, 16),
+  new THREE.MeshStandardMaterial({
+    map: marsTexture,
+  })
+);
+mars.position.set(0, 0, -70);
+scene.add(mars);
+
+
+
+//JUPITER
+const jupiterTexture = new THREE.TextureLoader().load('jupiter.gif')
+const jupiter = new THREE.Mesh(
+  new THREE.SphereGeometry(20, 32, 16),
+  new THREE.MeshStandardMaterial({
+    map: jupiterTexture,
+  })
+);
+jupiter.position.set(0, 0, -500);
+scene.add(jupiter);
+
+
+
+//SATURN
+const saturnTexture = new THREE.TextureLoader().load('saturn3.jpg')
+const saturn = new THREE.Mesh(
+  new THREE.SphereGeometry(20, 32, 16),
+  new THREE.MeshStandardMaterial({
+    map: saturnTexture
+  })
+);
+saturn.position.set(0, 0, -800);
+scene.add(saturn);
+
+
+
+// RINGS
+const ringsTexture = new THREE.TextureLoader().load('rings2.jpg');
+const ringGeometry = new THREE.RingGeometry( 50, 80, 32 )
+const ringMaterial = new THREE.MeshStandardMaterial( {
+  side: THREE.DoubleSide,
+  map: ringsTexture
+} );  
+const rings = new THREE.Mesh( ringGeometry, ringMaterial );
+
+rings.position.set(0, 0, -800);
+rings.rotation.x=90;
+scene.add( rings )
+
+
+
+//URANUS
+const uranusTexture = new THREE.TextureLoader().load('uranus.jpg')
+const uranus = new THREE.Mesh(
+  new THREE.SphereGeometry(5, 32, 16),
+  new THREE.MeshStandardMaterial({
+    map: uranusTexture,
+  })
+);
+uranus.position.set(0, 0, -1000);
+scene.add(uranus);
+
+
+
+//NEPTUNE
+const neptuneTexture = new THREE.TextureLoader().load('neptune.png')
+const neptune = new THREE.Mesh(
+  new THREE.SphereGeometry(4, 32, 16),
+  new THREE.MeshStandardMaterial({
+    map: neptuneTexture,
+  })
+);
+neptune.position.set(0, 0, -1200);
+scene.add(neptune);
+
+
+
+//PLUTO
+const plutoTexture = new THREE.TextureLoader().load('pluto.jpg')
+const pluto = new THREE.Mesh(
+  new THREE.SphereGeometry(2, 32, 16),
+  new THREE.MeshStandardMaterial({
+    map: plutoTexture,
+  })
+);
+pluto.position.set(0, 0, -1500);
+scene.add(pluto);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //ANIMATION LOOP
