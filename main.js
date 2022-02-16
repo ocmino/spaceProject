@@ -10,6 +10,7 @@ import { AmbientLight, PointLightHelper } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FlyControls } from 'three/examples/jsm/controls/FlyControls';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 import {
 	FileLoader,
@@ -26,7 +27,7 @@ import {
 //CREATE SCENE
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 4000 );
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 10000 );
 
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg')
@@ -36,13 +37,26 @@ renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize( window.innerWidth, window.innerHeight );
 camera.position.setZ(30);
 
+//ADD STARS
+function addStar() {
+  const geometry = new THREE.SphereGeometry(0.25, 24, 24);
+  const material = new THREE.MeshStandardMaterial( {color: 0xffffff})
+  const star = new THREE.Mesh( geometry, material );
 
+  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread( 2600 ) );
+
+  star.position.set(x, y, z);
+  scene.add(star);
+}
+Array(1000).fill().forEach(addStar) 
+
+const spaceTexture = new THREE.TextureLoader().load('black.jpg');
+scene.background = spaceTexture;
 
 //LIGHT, LIGHTHELPER AND GRIDHELPER
 const pointLight = new THREE.PointLight(0xffffff);
 
 pointLight.position.set(25, 5, 500);
-
 
 //const ambientLight = new THREE.AmbientLight(0xffffff);
 const ambientLight = new THREE.AmbientLight(0x404040);
@@ -53,45 +67,13 @@ const gridHelper = new THREE.GridHelper(2000, 100)
 const lightHelper = new THREE.PointLightHelper(pointLight)
 /* scene.add(lightHelper, gridHelper) */
 
-
-
-
-
 //CONTROLS
 const controls = new FlyControls(camera, renderer.domElement);
 
-controls.movementSpeed = 2; //Matchar musiken bra
+controls.movementSpeed = 10; // 2 matchar musiken bra
 controls.rollSpeed = 0.1;
 controls.autoForward = false;
 controls.dragToLook = false;
-
-
-
-
-
-
-
-//ADD STARS
-function addStar() {
-  const geometry = new THREE.SphereGeometry(0.25, 24, 24);
-  const material = new THREE.MeshStandardMaterial( {color: 0xffffff})
-  const star = new THREE.Mesh( geometry, material );
-
-  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread( 3000 ) );
-
-  star.position.set(x, y, z);
-  scene.add(star);
-}
-Array(1000).fill().forEach(addStar) 
-
-const spaceTexture = new THREE.TextureLoader().load('black.jpg');
-scene.background = spaceTexture;
-
-
-
-
-
-
 
 //CAMERA
 function moveCamera() {
@@ -115,7 +97,7 @@ document.body.onscroll = moveCamera;
 
 
 
-
+//**********************************************************************************//
 
 //SUN
 const sunTexture = new THREE.TextureLoader().load('sun.jpg')
@@ -129,12 +111,6 @@ scene.add(sun);
 
 sun.position.set(25, 5, 2000);
 
-
-
-
-
-
-
 // JONATHAN BOX
 const jonathanTexture = new THREE.TextureLoader().load('IMG_6100.JPG');
 const jonathan = new THREE.Mesh(
@@ -142,8 +118,6 @@ const jonathan = new THREE.Mesh(
   new THREE.MeshBasicMaterial( { map: jonathanTexture })
 );
 //scene.add(jonathan)
-
-
 
 //MERCURY
 const mercuryTexture = new THREE.TextureLoader().load('mercury.jpg')
@@ -156,8 +130,6 @@ const mercury = new THREE.Mesh(
 mercury.position.set(0, 0, 350);
 scene.add(mercury);
 
-
-
 //VENUS
 const venusTexture = new THREE.TextureLoader().load('venus.jpg')
 const venus = new THREE.Mesh(
@@ -168,8 +140,6 @@ const venus = new THREE.Mesh(
 );
 venus.position.set(0, 0, 200);
 scene.add(venus);
-
-
 
 // SPACESHIP
 const spaceshipTexture = new THREE.TextureLoader().load('death star.jpg');
@@ -182,8 +152,6 @@ const material = new THREE.MeshBasicMaterial( {
 const torus = new THREE.Mesh( geometry, material );
 scene.add( torus )
 
-
-
 //EARTH
 const earthTexture = new THREE.TextureLoader().load('earth.jpg')
 const earth = new THREE.Mesh(
@@ -194,8 +162,6 @@ const earth = new THREE.Mesh(
 );
 earth.position.set(0, 0, 30);
 scene.add(earth);
-
-
 
 //MOON
 const moonTexture = new THREE.TextureLoader().load('moon.jpg')
@@ -222,8 +188,6 @@ function render() {
 } 
 render();
 
-
-
 //FLYER
 const flyerTexture = new THREE.TextureLoader().load('windows.jpg')
 const flyer = new THREE.Mesh(
@@ -243,8 +207,6 @@ const body = new THREE.Mesh(
 flyer.rotateX(90)
 //scene.add(flyer, body)
 
-
-
 //MARS
 const marsTexture = new THREE.TextureLoader().load('mars.jpg')
 const mars = new THREE.Mesh(
@@ -255,8 +217,6 @@ const mars = new THREE.Mesh(
 );
 mars.position.set(0, 0, -70);
 scene.add(mars);
-
-
 
 //JUPITER
 const jupiterTexture = new THREE.TextureLoader().load('jupiter.gif')
@@ -269,8 +229,6 @@ const jupiter = new THREE.Mesh(
 jupiter.position.set(0, 0, -500);
 scene.add(jupiter);
 
-
-
 //SATURN
 const saturnTexture = new THREE.TextureLoader().load('saturn3.jpg')
 const saturn = new THREE.Mesh(
@@ -282,9 +240,7 @@ const saturn = new THREE.Mesh(
 saturn.position.set(0, 0, -800);
 scene.add(saturn);
 
-
-
-// RINGS
+// SATURN RINGS
 const ringsTexture = new THREE.TextureLoader().load('rings2.jpg');
 const ringGeometry = new THREE.RingGeometry( 50, 80, 32 )
 const ringMaterial = new THREE.MeshStandardMaterial( {
@@ -297,8 +253,6 @@ rings.position.set(0, 0, -800);
 rings.rotation.x=90;
 scene.add( rings )
 
-
-
 //URANUS
 const uranusTexture = new THREE.TextureLoader().load('uranus.jpg')
 const uranus = new THREE.Mesh(
@@ -310,8 +264,6 @@ const uranus = new THREE.Mesh(
 uranus.position.set(0, 0, -1000);
 scene.add(uranus);
 
-
-
 //NEPTUNE
 const neptuneTexture = new THREE.TextureLoader().load('neptune.png')
 const neptune = new THREE.Mesh(
@@ -322,8 +274,6 @@ const neptune = new THREE.Mesh(
 );
 neptune.position.set(0, 0, -1200);
 scene.add(neptune);
-
-
 
 //PLUTO
 const plutoTexture = new THREE.TextureLoader().load('pluto.jpg')
@@ -342,15 +292,7 @@ scene.add(pluto);
 
 
 
-
-
-
-
-
-
-
-
-
+//**********************************************************************************//
 
 
 //ANIMATION LOOP
@@ -419,8 +361,6 @@ function animate() {
 
   renderer.render( scene, camera );
 }
-
-
 
 
 
