@@ -6,7 +6,7 @@ import './style.css'
 
 
 import * as THREE from 'three';
-import { AmbientLight, PointLightHelper } from 'three';
+import { AmbientLight, Object3D, PointLightHelper } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FlyControls } from 'three/examples/jsm/controls/FlyControls';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
@@ -70,7 +70,7 @@ const lightHelper = new THREE.PointLightHelper(pointLight)
 //CONTROLS
 const controls = new FlyControls(camera, renderer.domElement);
 
-controls.movementSpeed = 10; // 2 matchar musiken bra
+controls.movementSpeed = 1; // 2 matchar musiken bra
 controls.rollSpeed = 0.1;
 controls.autoForward = false;
 controls.dragToLook = false;
@@ -188,8 +188,29 @@ function render() {
 } 
 render();
 
+
+
+
+
 //FLYER
-const flyerTexture = new THREE.TextureLoader().load('windows.jpg')
+const loader = new GLTFLoader();
+loader.load( 'spaceship/scene.gltf', function ( gltf ) {
+  const flyer = gltf.scene
+  flyer.scale.set(0.2, 0.2, 0.2);
+  flyer.position.set (0, 0 , 0)
+	scene.add( flyer );
+}, undefined, function ( error ) {
+	console.error( error );
+} );
+
+
+
+
+
+
+
+
+/* const flyerTexture = new THREE.TextureLoader().load('windows.jpg')
 const flyer = new THREE.Mesh(
   new THREE.ConeGeometry(1,2, 32),
   new THREE.MeshStandardMaterial({
@@ -205,7 +226,7 @@ const body = new THREE.Mesh(
   })
 )
 flyer.rotateX(90)
-//scene.add(flyer, body)
+scene.add(flyer, body) */
 
 //MARS
 const marsTexture = new THREE.TextureLoader().load('mars.jpg')
@@ -292,6 +313,14 @@ scene.add(pluto);
 
 
 
+
+
+
+
+
+
+
+
 //**********************************************************************************//
 
 
@@ -337,24 +366,28 @@ function animate() {
   
 
   controls.update(0.05);
+  
 
-
-
+  flyer.position.set(camera.position);
   flyer.position.copy( camera.position );
+  flyer.rotation.copy( camera.position );
+  flyer.updateMatrix();
+  flyer.translateZ( - 10 );
+
+
+  /* flyer.position.copy( camera.position );
   flyer.rotation.copy( camera.rotation );
   flyer.updateMatrix();
-  flyer.translateZ( - 12 );
+  flyer.translateZ( - 12 ); */
 
 
-  body.position.copy( camera.position );
+ /*  body.position.copy( camera.position );
   body.rotation.copy( camera.rotation );
   body.updateMatrix();
   body.translateY(-2.1);
-  body.translateZ( - 8 );
+  body.translateZ( - 8 ); */
 
 
-  flyer.rotateX(-69.9)
-  body.rotateX(-70)
 
 
 
