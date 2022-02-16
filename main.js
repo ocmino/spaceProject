@@ -19,7 +19,7 @@ import {
 } from 'three';
 
 
-
+var flyer
 
 
 
@@ -70,7 +70,7 @@ const lightHelper = new THREE.PointLightHelper(pointLight)
 //CONTROLS
 const controls = new FlyControls(camera, renderer.domElement);
 
-controls.movementSpeed = 1; // 2 matchar musiken bra
+controls.movementSpeed = 2; // 2 matchar musiken bra
 controls.rollSpeed = 0.1;
 controls.autoForward = false;
 controls.dragToLook = false;
@@ -189,44 +189,41 @@ function render() {
 render();
 
 
+/* //FLYER
+const loader = new GLTFLoader();
+loader.load( 'spacefighter/scene.gltf', function ( gltf ) {
+  flyer = gltf.scene
+  flyer.scale.set(0.5, 0.5, 0.5);
+	scene.add( flyer );
+}, undefined, function ( error ) {
+	console.error( error );
+} ); */
 
 
 
 //FLYER
 const loader = new GLTFLoader();
-loader.load( 'spaceship/scene.gltf', function ( gltf ) {
-  const flyer = gltf.scene
-  flyer.scale.set(0.2, 0.2, 0.2);
-  flyer.position.set (0, 0 , 0)
+loader.load( 'droid_tri_fighter/scene.gltf', function ( gltf ) {
+  flyer = gltf.scene
+  flyer.scale.set(0.001, 0.001, 0.001);
 	scene.add( flyer );
 }, undefined, function ( error ) {
 	console.error( error );
 } );
 
+/* 
+//FLYER
+const loader = new GLTFLoader();
+loader.load( 'spaceship/scene.gltf', function ( gltf ) {
+  flyer = gltf.scene
+  flyer.scale.set(0.1, 0.1, 0.1);
+	scene.add( flyer );
+}, undefined, function ( error ) {
+	console.error( error );
+} );
+ */
 
 
-
-
-
-
-
-/* const flyerTexture = new THREE.TextureLoader().load('windows.jpg')
-const flyer = new THREE.Mesh(
-  new THREE.ConeGeometry(1,2, 32),
-  new THREE.MeshStandardMaterial({
-    map: flyerTexture,
-  })
-);
-
-const flyerBody = new THREE.TextureLoader().load('windows.jpg')
-const body = new THREE.Mesh(
-  new THREE.CylinderGeometry( 1, 1, 4, 32 ),
-  new THREE.MeshStandardMaterial({
-    map: flyerBody,
-  })
-)
-flyer.rotateX(90)
-scene.add(flyer, body) */
 
 //MARS
 const marsTexture = new THREE.TextureLoader().load('mars.jpg')
@@ -368,29 +365,22 @@ function animate() {
   controls.update(0.05);
   
 
-  flyer.position.set(camera.position);
   flyer.position.copy( camera.position );
-  flyer.rotation.copy( camera.position );
-  flyer.updateMatrix();
-  flyer.translateZ( - 10 );
-
-
-  /* flyer.position.copy( camera.position );
   flyer.rotation.copy( camera.rotation );
   flyer.updateMatrix();
-  flyer.translateZ( - 12 ); */
-
-
- /*  body.position.copy( camera.position );
-  body.rotation.copy( camera.rotation );
-  body.updateMatrix();
-  body.translateY(-2.1);
-  body.translateZ( - 8 ); */
-
-
+  flyer.translateZ( - 1 );
+  flyer.translateY( - 0.4)
+  
+  /* if (flyer) {
+    flyer.rotateX(180)
+  } */
+ 
 
 
 
+  
+
+  
 
   renderer.render( scene, camera );
 }
